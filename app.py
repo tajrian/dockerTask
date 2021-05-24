@@ -12,7 +12,7 @@ def home():
         email = userInfo["email"]
         mobile_number = userInfo["mobile_number"]
 
-        return "Hi" + first_name
+        return "Hi " + first_name
     return render_template("home.html")
 
 if __name__ == "__main__":
