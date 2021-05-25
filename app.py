@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request
 from flaskext.mysql import MySQL
+import yaml 
 
 app = Flask(__name__)
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
-app.config['MYSQL_DATABASE_DB'] = 'test'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+db = yaml.load('db.yaml'))
+app.config['MYSQL_DATABASE_USER'] = db['mysql_user']
+app.config['MYSQL_DATABASE_PASSWORD'] = db['mysql_password']
+app.config['MYSQL_DATABASE_DB'] = db['mysql_db']
+app.config['MYSQL_DATABASE_HOST'] = db['localhost']
  
 
 mysql = MySQL()
