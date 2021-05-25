@@ -34,7 +34,15 @@ def home():
         conn.commit()
         return "done"
 
-        return "Hi " + first_name
+
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    userValue = cursor.execute("select * from flask_user")
+    if userValue > 0:
+        userDetails = cursor.fetchall()
+        
+        return render_template('home.html',userDetails = userDetails)
+
     return render_template("home.html")
 
 if __name__ == "__main__":
