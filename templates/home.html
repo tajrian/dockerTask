@@ -16,7 +16,7 @@
         <td>{{ user[3] }}</td>
         <td>{{ user[4] }}</td>
         <td><Button><a href="/edit/{{ user[0] }}"> Edit </a></button></td>
-        <td><Button>Delete</Button></td>
+        <td><Button><a href="/delete/{{ user[0] }}"> Delete </a></Button></td>
     </tr>
     {% endfor %}
 </table>
