@@ -19,9 +19,6 @@ mysql.init_app(app)
 
 
 
-
-
-
 @app.route('/',methods = ['GET','POST'])
 def home():
 
@@ -35,7 +32,8 @@ def home():
         cursor =conn.cursor()
         cursor.execute("INSERT INTO appUser(first_name, last_name, email, phone_number) VALUES(%s, %s,%s, %s)",(first_name, last_name, email, phone_number))
         conn.commit()
-        return "done"
+        return render_template("editSuccess.html", message = "user created!")
+        
 
 
     conn = mysql.connect()
@@ -49,6 +47,16 @@ def home():
     
 
     return render_template("home.html")
+
+@app.route('/delete/<int:id>', methods=['get', 'post'])
+def delete(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    #print(type(id))
+    userValue = cursor.execute("DELETE from test.appUser where user_id=%s",id)
+    conn.commit()
+    return render_template("editSuccess.html", message = "deleted!")
+    
 
 
 @app.route('/edit/<int:id>', methods=['get', 'post'])
@@ -64,6 +72,7 @@ def edit(id):
         return render_template("edit.html", userDetails = userDetails ) 
 
     return "We are lost dr kim! :("
+    
 
 @app.route('/update',methods = ['GET','POST'])
 def update():
@@ -80,7 +89,7 @@ def update():
         cursor.execute ("""UPDATE appUser SET first_name=%s, last_name=%s, email=%s, phone_number=%s WHERE user_id=%s""", (first_name,last_name,email,phone_number,id))
         conn.commit()
     
-    return render_template("editSuccess.html")
+    return render_template("editSuccess.html", message = "edited !")
 
 
 
