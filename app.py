@@ -45,7 +45,9 @@ def home():
         userDetails = cursor.fetchall()
         
         return render_template('home.html',userDetails = userDetails)
+
     
+
     return render_template("home.html")
 
 
