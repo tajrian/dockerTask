@@ -1,0 +1,14 @@
+{% for user in userDetails %}
+
+<form action="/update" method="post">
+    <input type="hidden" type="text" name="id" value="{{ user[0] }}">
+    First Name<input  type="text" name="first_name" placeholder="First Name" value="{{ user[1] }}" required>
+    Last Name<input  type="text" name="last_name" placeholder="Last Name" value="{{ user[2] }}" required>
+    Email<input  type="text" name="email" placeholder="email Address" value="{{ user[3] }}" required>
+    Mobile Number<input  type="text" name="phone_number" placeholder="Mobile Number" value="{{ user[4] }}" required>
+    <button  type="submit">
+        Update
+    </button>
+</form>
+
+{% endfor %}
