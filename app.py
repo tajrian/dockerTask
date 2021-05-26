@@ -19,6 +19,9 @@ mysql.init_app(app)
 
 
 
+
+
+
 @app.route('/',methods = ['GET','POST'])
 def home():
 
@@ -27,23 +30,60 @@ def home():
         first_name = userInfo["first_name"]
         last_name = userInfo["last_name"]
         email = userInfo["email"]
-        mobile_number = userInfo["mobile_number"]
+        phone_number = userInfo["phone_number"]
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO flask_user(first_name, last_name, email, phone_number) VALUES(%s, %s,%s, %s)",(first_name, last_name, email, mobile_number))
+        cursor.execute("INSERT INTO appUser(first_name, last_name, email, phone_number) VALUES(%s, %s,%s, %s)",(first_name, last_name, email, phone_number))
         conn.commit()
         return "done"
 
 
     conn = mysql.connect()
     cursor =conn.cursor()
-    userValue = cursor.execute("select * from flask_user")
+    userValue = cursor.execute("select * from appUser")
     if userValue > 0:
         userDetails = cursor.fetchall()
         
         return render_template('home.html',userDetails = userDetails)
 
+    
+
     return render_template("home.html")
+
+
+@app.route('/edit/<int:id>', methods=['get', 'post'])
+def edit(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    #print(type(id))
+    userValue = cursor.execute("SELECT user_id,first_name,last_name,email,phone_number FROM appUser WHERE user_id=%s",id)
+    if userValue > 0:
+        userDetails = cursor.fetchall()
+
+    if userDetails:
+        return render_template("edit.html", userDetails = userDetails ) 
+
+    return "We are lost dr kim! :("
+
+@app.route('/update',methods = ['GET','POST'])
+def update():
+
+    if request.method == "POST" :
+        userInfo = request.form
+        id = userInfo['id']
+        first_name = userInfo["first_name"]
+        last_name = userInfo["last_name"]
+        email = userInfo["email"]
+        phone_number = userInfo["phone_number"]
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute ("""UPDATE appUser SET first_name=%s, last_name=%s, email=%s, phone_number=%s WHERE user_id=%s""", (first_name,last_name,email,phone_number,id))
+        conn.commit()
+    
+    return render_template("editSuccess.html")
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

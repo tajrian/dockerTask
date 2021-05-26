@@ -5,14 +5,18 @@
         <td>Last_name</td>
         <td>Email</td>
         <td>Mobile Number</td>
+        <td>Edit</td>
+        <td>Delete</td>
 
     </tr>
     {% for user in userDetails %}
     <tr>
-        <td>{{ user[0] }}</td>
         <td>{{ user[1] }}</td>
         <td>{{ user[2] }}</td>
         <td>{{ user[3] }}</td>
+        <td>{{ user[4] }}</td>
+        <td><Button><a href="/edit/{{ user[0] }}"> Edit </a></button></td>
+        <td><Button>Delete</Button></td>
     </tr>
     {% endfor %}
 </table>
@@ -26,7 +30,7 @@
     <br>
     Email <input type="text" name="email">
     <br>
-    Mobile Number <input type="text" name="mobile_number">
+    Mobile Number <input type="text" name="phone_number">
     <br>
     <input type="submit">
     
