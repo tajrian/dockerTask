@@ -2,6 +2,7 @@
 
 Make sure you have docker and docker-compose installed ! 
 
+
 install docker: https://docs.docker.com/engine/install/ubuntu/  
 install docker-compose: https://docs.docker.com/compose/install/  
 
@@ -17,4 +18,5 @@ $ cd project_1
 $ git clone git@github.com:tajrian/dockerTask.git  
 $ cd dockerTask  
 $ docker-compose up   
+
 
