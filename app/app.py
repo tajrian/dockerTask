@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flaskext.mysql import MySQL
+
 from flask import jsonify
 
 app = Flask(__name__)
@@ -28,6 +29,7 @@ def home():
         conn = mysql.connect()
         cursor =conn.cursor()
         cursor.execute("INSERT INTO appUser(first_name, last_name, email, phone_number,active) VALUES(%s, %s,%s, %s,%s)",(first_name, last_name, email, phone_number,active))
+
         conn.commit()
         return render_template("editSuccess.html", message = "user created!")
         
@@ -36,6 +38,7 @@ def home():
     conn = mysql.connect()
     cursor =conn.cursor()
     userValue = cursor.execute("SELECT * FROM appUser WHERE active = 1")
+
     if userValue > 0:
         userDetails = cursor.fetchall()
         
@@ -52,6 +55,7 @@ def delete(id):
     userValue = cursor.execute("UPDATE appUser SET active=0 WHERE user_id=%s",id)
     conn.commit()
     return render_template("editSuccess.html", message = "deleted!")
+
 
 
 
