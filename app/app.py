@@ -4,14 +4,12 @@ import yaml
 
 app = Flask(__name__)
 
-yaml_file = open("/home/user/dockerPractice/docTask/dockerTask/db.yaml", 'r')
-db = yaml.load(yaml_file)
 
 
-app.config['MYSQL_DATABASE_USER'] = db['mysql_user']
-app.config['MYSQL_DATABASE_PASSWORD'] = db['mysql_password']
-app.config['MYSQL_DATABASE_DB'] = db['mysql_db']
-app.config['MYSQL_DATABASE_HOST'] = db['mysql_host']
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
+app.config['MYSQL_DATABASE_DB'] = 'test'
+app.config['MYSQL_DATABASE_HOST'] = 'db'
  
 
 mysql = MySQL()
@@ -28,9 +26,10 @@ def home():
         last_name = userInfo["last_name"]
         email = userInfo["email"]
         phone_number = userInfo["phone_number"]
+        active = 1
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO appUser(first_name, last_name, email, phone_number) VALUES(%s, %s,%s, %s)",(first_name, last_name, email, phone_number))
+        cursor.execute("INSERT INTO appUser(first_name, last_name, email, phone_number, active) VALUES(%s, %s,%s, %s, %s)",(first_name, last_name, email, phone_number,active))
         conn.commit()
         return render_template("editSuccess.html", message = "user created!")
         
@@ -50,46 +49,21 @@ def home():
 
 @app.route('/delete/<int:id>', methods=['get', 'post'])
 def delete(id):
-    conn = mysql.connect()
-    cursor =conn.cursor()
-    #print(type(id))
-    userValue = cursor.execute("DELETE from test.appUser where user_id=%s",id)
-    conn.commit()
-    return render_template("editSuccess.html", message = "deleted!")
+    
+    return ("Here to delete")
     
 
 
 @app.route('/edit/<int:id>', methods=['get', 'post'])
 def edit(id):
-    conn = mysql.connect()
-    cursor =conn.cursor()
-    #print(type(id))
-    userValue = cursor.execute("SELECT user_id,first_name,last_name,email,phone_number FROM appUser WHERE user_id=%s",id)
-    if userValue > 0:
-        userDetails = cursor.fetchall()
-
-    if userDetails:
-        return render_template("edit.html", userDetails = userDetails ) 
-
-    return "We are lost dr kim! :("
+    
+    return "Here to edit! "
     
 
 @app.route('/update',methods = ['GET','POST'])
 def update():
 
-    if request.method == "POST" :
-        userInfo = request.form
-        id = userInfo['id']
-        first_name = userInfo["first_name"]
-        last_name = userInfo["last_name"]
-        email = userInfo["email"]
-        phone_number = userInfo["phone_number"]
-        conn = mysql.connect()
-        cursor =conn.cursor()
-        cursor.execute ("""UPDATE appUser SET first_name=%s, last_name=%s, email=%s, phone_number=%s WHERE user_id=%s""", (first_name,last_name,email,phone_number,id))
-        conn.commit()
-    
-    return render_template("editSuccess.html", message = "edited !")
+    return ("Here to update!")
 
 
 
