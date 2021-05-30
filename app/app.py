@@ -1,22 +1,19 @@
 from flask import Flask, render_template, request
 from flaskext.mysql import MySQL
-import yaml 
+
+from flask import jsonify
 
 app = Flask(__name__)
 
-yaml_file = open("/home/user/dockerPractice/docTask/dockerTask/db.yaml", 'r')
-db = yaml.load(yaml_file)
 
 
-app.config['MYSQL_DATABASE_USER'] = db['mysql_user']
-app.config['MYSQL_DATABASE_PASSWORD'] = db['mysql_password']
-app.config['MYSQL_DATABASE_DB'] = db['mysql_db']
-app.config['MYSQL_DATABASE_HOST'] = db['mysql_host']
- 
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
+app.config['MYSQL_DATABASE_DB'] = 'test'
+app.config['MYSQL_DATABASE_HOST'] = 'db'
 
 mysql = MySQL()
 mysql.init_app(app)
-
 
 
 @app.route('/',methods = ['GET','POST'])
@@ -28,9 +25,11 @@ def home():
         last_name = userInfo["last_name"]
         email = userInfo["email"]
         phone_number = userInfo["phone_number"]
+        active = 1
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO appUser(first_name, last_name, email, phone_number) VALUES(%s, %s,%s, %s)",(first_name, last_name, email, phone_number))
+        cursor.execute("INSERT INTO appUser(first_name, last_name, email, phone_number,active) VALUES(%s, %s,%s, %s,%s)",(first_name, last_name, email, phone_number,active))
+
         conn.commit()
         return render_template("editSuccess.html", message = "user created!")
         
@@ -38,7 +37,8 @@ def home():
 
     conn = mysql.connect()
     cursor =conn.cursor()
-    userValue = cursor.execute("select * from appUser")
+    userValue = cursor.execute("SELECT * FROM appUser WHERE active = 1")
+
     if userValue > 0:
         userDetails = cursor.fetchall()
         
@@ -52,11 +52,11 @@ def home():
 def delete(id):
     conn = mysql.connect()
     cursor =conn.cursor()
-    #print(type(id))
-    userValue = cursor.execute("DELETE from test.appUser where user_id=%s",id)
+    userValue = cursor.execute("UPDATE appUser SET active=0 WHERE user_id=%s",id)
     conn.commit()
     return render_template("editSuccess.html", message = "deleted!")
-    
+
+
 
 
 @app.route('/edit/<int:id>', methods=['get', 'post'])
@@ -94,5 +94,6 @@ def update():
 
 
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
