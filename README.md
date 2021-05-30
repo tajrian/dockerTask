@@ -17,6 +17,7 @@ $ mkdir project_1
 $ cd project_1  
 $ git clone git@github.com:tajrian/dockerTask.git  
 $ cd dockerTask  
-$ docker-compose up   
+$ docker-compose up     
 
+Go to http://0.0.0.0:5000/ to access the site !   
 
